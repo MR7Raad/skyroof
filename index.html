@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>  skyroof Restaurant</title>
-  <!-- خطوط عربية وكردية وإنجليزية فاخرة -->
-  <link rel="preconnect" href="https://fonts.googleapis.com display=swap"/>
+  <title>Skyroof Restaurant</title>
+  <!-- خط Cairo مع تحميل غير معطل للواجهة -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Playfair+Display:wght@600;700& display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" /></noscript>
   <!-- مكتبة الأيقونات -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
@@ -163,6 +164,7 @@
       position: relative;
       height: 100dvh;
       overflow: hidden;
+      background: #0a0a0a;
     }
 
     .fullscreen-video {
@@ -369,7 +371,7 @@
       cursor: pointer;
     }
 
-    /* الفيديو المستطيل */
+    /* الفيديو المستطيل / بانر الصفحة الثانية */
     .rect-video-container {
       margin: 0 16px 18px;
       border-radius: 18px;
@@ -381,7 +383,7 @@
       background: #111;
     }
 
-    .rect-video-container video {
+    .rect-video-container img.banner-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -399,6 +401,13 @@
       border-radius: 20px;
       font-size: 0.78rem;
       font-weight: 700;
+      display: none;
+    }
+
+    .video-badge.has-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
     /* شريط التصنيفات القابل للسحب الأفقي */
@@ -855,7 +864,7 @@
   <header class="top-header">
     <div class="brand-mini" onclick="navigateTo('home')">
       <i class="fa-solid fa-home"></i>
-      <span data-i18n="brandName"> skyroof</span>
+      <span data-i18n="brandName">skyroof</span>
     </div>
 
     <div class="lang-wrapper">
@@ -875,7 +884,7 @@
           <span>en</span>
         </button>
         <button class="lang-option" data-lang="ku" onclick="setLanguage('ku')">
-          <span>کوردی </span>
+          <span>کوردی</span>
           <span>kr</span>
         </button>
       </div>
@@ -887,13 +896,13 @@
 
   <!-- ================= الصفحة الأولى: شاشة الفيديو الكاملة ================= -->
   <main id="home-page" class="page active">
-    <video class="fullscreen-video" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1080&q=80">
-      <source src="" type="video/mp4" />
+    <video class="fullscreen-video" autoplay muted loop playsinline preload="metadata">
+      <source src="skyroofvideo.mp4" type="video/mp4" />
     </video>
 
     <div class="home-overlay">
       <h1 class="hero-title" data-i18n="heroTitle">أصالة الضيافة العراقية</h1>
-      <p class="hero-subtitle" data-i18n="heroSubtitle">        استمتع بالاجواء مع العائلة تحت سماء بغداد في skyroof</p>
+      <p class="hero-subtitle" data-i18n="heroSubtitle">استمتع بالاجواء مع العائلة تحت سماء بغداد في skyroof</p>
 
       <footer class="home-footer">
         <!-- زر مينو للانتقال للصفحة الثانية -->
@@ -908,15 +917,11 @@
           <span data-i18n="instaText">@skyroofiq</span>
         </a>
 
-        <!-- شعار ورابط الموقع تحت شعار إنستغرام -->
         <!-- شعار العنوان / الموقع بدل الكرة الأرضية -->
         <a href="https://maps.app.goo.gl/avsS8CUKArS6iYZ86" target="_blank" rel="noopener noreferrer" class="website-link">
           <i class="fa-solid fa-location-dot"></i>
-          <span data-i18n="websiteText">موقع المطعم </span>
+          <span data-i18n="websiteText">موقع المطعم</span>
         </a>
-
-        
-        
 
         <!-- أرقام الحجوزات -->
         <div class="reservation-box">
@@ -946,15 +951,13 @@
         <i class="fa-solid fa-arrow-right" id="backArrowIcon"></i>
         <span data-i18n="backHome">الرئيسية</span>
       </button>
-      <span style="color: var(--gold); font-weight: 800; font-size: 0.95rem;" data-i18n="menuHeaderTitle"> </span>
+      <span style="color: var(--gold); font-weight: 800; font-size: 0.95rem;" data-i18n="menuHeaderTitle"></span>
     </div>
 
-    <!-- الفيديو المستطيل -->
+    <!-- بانر الصفحة الثانية -->
     <div class="rect-video-container">
-      <video autoplay muted loop playsinline poster="">
-        <source src="" type="video/mp4" />
-      </video>
-      <span class="video-badge">
+      <img class="banner-img" src="pagetwo.jpeg" alt="Skyroof Menu" loading="lazy" onerror="this.style.display='none';" />
+      <span class="video-badge" id="videoBadgeEl">
         <i class="fa-solid fa-fire-flame-curved"></i>
         <span data-i18n="videoPromo"></span>
       </span>
@@ -1014,7 +1017,7 @@
         dir: "rtl",
         brandName: "skyroof",
         heroTitle: "أصالة الضيافة العراقية",
-        heroSubtitle: " استمتع بالاجواء مع العائلة تحت سماء بغداد في skyroof",
+        heroSubtitle: "استمتع بالاجواء مع العائلة تحت سماء بغداد في skyroof",
         menuBtn: "مينو",
         instaText: "@skyroofiq",
         websiteText: "موقع المطعم",
@@ -1062,7 +1065,7 @@
         waNote: "Notes / Address:"
       },
       ku: {
-        langName: "کوردی سۆرانی",
+        langName: "کوردی",
         dir: "rtl",
         brandName: "skyroof",
         heroTitle: "ڕەسەنایەتی میوانداری عێراقی",
@@ -1217,17 +1220,22 @@
       const t = TRANSLATIONS[currentLang];
       document.querySelectorAll("[data-i18n]").forEach((el) => {
         const key = el.getAttribute("data-i18n");
-        if (t[key]) {
+        if (key in t) {
           el.textContent = t[key];
         }
       });
 
       document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
         const key = el.getAttribute("data-i18n-placeholder");
-        if (t[key]) {
+        if (key in t) {
           el.placeholder = t[key];
         }
       });
+
+      const badgeEl = document.getElementById("videoBadgeEl");
+      if (badgeEl) {
+        badgeEl.classList.toggle("has-text", Boolean(t.videoPromo && t.videoPromo.trim()));
+      }
     }
 
     const domObserver = new MutationObserver((mutations) => {
@@ -1272,7 +1280,7 @@
         ? MENU_ITEMS
         : MENU_ITEMS.filter((item) => item.cat === activeCategory);
 
-      const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a1a'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' fill='%23d4af37' font-family='sans-serif' font-size='22' font-weight='bold'%3ERoyal%3C/text%3E%3C/svg%3E";
+      const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a1a'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' fill='%23d4af37' font-family='sans-serif' font-size='22' font-weight='bold'%3ESkyroof%3C/text%3E%3C/svg%3E";
 
       container.innerHTML = filtered.map((item) => {
         const title = item.name[currentLang] || item.name.ar;
@@ -1447,29 +1455,6 @@
 
     // تهيئة الموقع عند التشغيل
     setLanguage(currentLang);
-
-addArabicMenuItem({
-  cat: "grills",
-  price: 16000,
-  img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400&q=80",
-  nameAr: "تكة لحم عراقي",
-  descAr: "قطع لحم عراقي متبلة ومشوية على الفحم"
-});
-
-addArabicMenuItem({
-  cat: "drinks",
-  price: 3000,
-  img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=400&q=80",
-  nameAr: "عصير برتقال طبيعي",
-  descAr: "عصير برتقال عراقي طازج بدون سكر مضاف"
-});
-
-
-
-
-
-
-
   </script>
 </body>
 </html>
