@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>  skyroof Restaurant</title>
+  <!-- خطوط عربية وكردية وإنجليزية فاخرة -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <!-- مكتبة الأيقونات -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --bg-black: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-hover: #1c1a15;
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-dark: #aa8222;
+      --gold-glow: rgba(212, 175, 55, 0.35);
+      --text-white: #f8f8f8;
+      --text-muted: #a3a3a3;
+      --border-gold: rgba(212, 175, 55, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: var(--bg-black);
+      color: var(--text-white);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ================= الهيدر العائم ================= */
+    .top-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: linear-gradient(to bottom, rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0));
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    .brand-mini {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+
+    .brand-mini i {
+      font-size: 1.2rem;
+      filter: drop-shadow(0 0 6px var(--gold-glow));
+    }
+
+    /* زر الترجمة */
+    .lang-wrapper {
+      position: relative;
+    }
+
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(20, 20, 20, 0.88);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      transition: all 0.25s ease;
+    }
+
+    .lang-btn:hover {
+      background: var(--gold);
+      color: var(--bg-black);
+    }
+
+    .lang-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      inset-inline-end: 0;
+      background: #141414;
+      border: 1px solid var(--gold);
+      border-radius: 14px;
+      min-width: 165px;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+      z-index: 1100;
+    }
+
+    .lang-dropdown.active {
+      display: flex;
+      animation: fadeInDown 0.2s ease;
+    }
+
+    .lang-option {
+      background: transparent;
+      border: none;
+      color: var(--text-white);
+      padding: 11px 16px;
+      text-align: start;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      transition: background 0.2s;
+    }
+
+    .lang-option:last-child {
+      border-bottom: none;
+    }
+
+    .lang-option:hover,
+    .lang-option.selected {
+      background: rgba(212, 175, 55, 0.18);
+      color: var(--gold-light);
+    }
+
+    /* ================= نظام الصفحات ================= */
+    .page {
+      display: none;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    .page.active {
+      display: block;
+      animation: fadeIn 0.35s ease;
+    }
+
+    /* ================= الصفحة الأولى: الرئيسية ================= */
+    #home-page {
+      position: relative;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    .fullscreen-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .home-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0.45) 0%,
+        rgba(10, 10, 10, 0.2) 40%,
+        rgba(10, 10, 10, 0.88) 78%,
+        rgba(10, 10, 10, 0.98) 100%
+      );
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 24px 20px 32px;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff6d6 0%, #d4af37 50%, #aa8222 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-bottom: 20px;
+      max-width: 340px;
+    }
+
+    /* الفوتر في الصفحة الأولى */
+    .home-footer {
+      width: 100%;
+      max-width: 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* زر مينو */
+    .menu-cta-btn {
+      width: 100%;
+      max-width: 260px;
+      padding: 14px 28px;
+      border-radius: 50px;
+      border: 2px solid var(--gold-light);
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: var(--bg-black);
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 0 25px var(--gold-glow);
+      animation: pulseGold 2.2s infinite;
+      transition: transform 0.2s ease;
+      margin-bottom: 4px;
+    }
+
+    .menu-cta-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* رابط الانستكرام ورابط الموقع */
+    .insta-link,
+    .website-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gold-light);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-gold);
+      transition: all 0.25s ease;
+    }
+
+    .insta-link i,
+    .website-link i {
+      font-size: 1.1rem;
+      color: var(--gold);
+    }
+
+    .insta-link:hover,
+    .website-link:hover {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold);
+    }
+
+    /* أرقام الحجوزات */
+    .reservation-box {
+      width: 100%;
+      background: rgba(20, 20, 20, 0.85);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 12px 14px;
+      backdrop-filter: blur(8px);
+      margin-top: 4px;
+    }
+
+    .res-label {
+      font-size: 0.8rem;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .res-numbers {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .res-phone {
+      flex: 1;
+      min-width: 135px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--text-white);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      direction: ltr;
+      transition: all 0.2s;
+    }
+
+    .res-phone i {
+      color: var(--gold);
+    }
+
+    .res-phone:hover {
+      background: var(--gold);
+      color: var(--bg-black);
+    }
+
+    .res-phone:hover i {
+      color: var(--bg-black);
+    }
+
+    /* ================= الصفحة الثانية: المنيو ================= */
+    #menu-page {
+      padding-top: 64px;
+      padding-bottom: 100px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* شريط العودة العلوي */
+    .menu-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px 12px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-light);
+      padding: 7px 14px;
+      border-radius: 50px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* الفيديو المستطيل */
+    .rect-video-container {
+      margin: 0 16px 18px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1.5px solid var(--gold);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.18);
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #111;
+    }
+
+    .rect-video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .video-badge {
+      position: absolute;
+      bottom: 10px;
+      inset-inline-start: 12px;
+      background: rgba(10, 10, 10, 0.8);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    /* شريط التصنيفات القابل للسحب الأفقي */
+    .categories-scroll {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 4px 16px 14px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
+    }
+
+    .categories-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-pill {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      color: var(--text-white);
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .cat-pill i {
+      color: var(--gold);
+      font-size: 1.05rem;
+    }
+
+    .cat-pill.active {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: var(--bg-black);
+      border-color: var(--gold-light);
+      box-shadow: 0 4px 15px var(--gold-glow);
+    }
+
+    .cat-pill.active i {
+      color: var(--bg-black);
+    }
+
+    /* قائمة العناصر مع الصور */
+    .menu-items-list {
+      padding: 4px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .menu-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-gold);
+      border-radius: 18px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .item-img-box {
+      width: 92px;
+      height: 92px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      background: #1c1c1c;
+      position: relative;
+    }
+
+    .item-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+
+    .menu-card:hover .item-img-box img {
+      transform: scale(1.08);
+    }
+
+    .item-details {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .item-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--gold-light);
+      line-height: 1.3;
+    }
+
+    .item-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .item-bottom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .item-price {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--gold);
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .currency-label {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    /* أزرار الإضافة والكمية مقابل السعر */
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--border-gold);
+      border-radius: 50px;
+      padding: 3px;
+    }
+
+    .plus-btn,
+    .minus-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .plus-btn {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: var(--bg-black);
+      box-shadow: 0 2px 8px var(--gold-glow);
+    }
+
+    .plus-btn:active {
+      transform: scale(0.9);
+    }
+
+    .minus-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--gold-light);
+    }
+
+    .qty-count {
+      font-size: 0.88rem;
+      font-weight: 800;
+      min-width: 18px;
+      text-align: center;
+      color: var(--text-white);
+    }
+
+    /* ================= شريط سلة الواتساب العائم ================= */
+    .cart-bar {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      max-width: 648px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #1a1812 0%, #0d0d0d 100%);
+      border: 1.5px solid var(--gold);
+      border-radius: 18px;
+      padding: 12px 16px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px var(--gold-glow);
+      z-index: 950;
+    }
+
+    .cart-bar.visible {
+      display: flex;
+      animation: slideUp 0.3s ease;
+    }
+
+    .cart-summary {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-count-text {
+      font-size: 0.8rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .cart-total-text {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .review-order-btn {
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+    }
+
+    /* ================= نافذة مراجعة الطلب وإرساله للواتساب ================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 1200;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .order-modal {
+      width: 100%;
+      max-width: 540px;
+      background: #141414;
+      border-top: 2px solid var(--gold);
+      border-radius: 24px 24px 0 0;
+      padding: 20px;
+      max-height: 85vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+
+    .modal-header h3 {
+      color: var(--gold);
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .close-modal {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: var(--text-white);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .order-items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .order-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    .order-line-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--gold);
+      flex-shrink: 0;
+    }
+
+    .order-line-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .order-line-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--gold-light);
+    }
+
+    .order-line-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .customer-note-input {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid var(--border-gold);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: var(--text-white);
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.88rem;
+      margin-bottom: 14px;
+      outline: none;
+    }
+
+    .customer-note-input:focus {
+      border-color: var(--gold);
+    }
+
+    .whatsapp-send-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+      color: #fff;
+      font-family: 'Cairo', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .clear-cart-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 80, 80, 0.35);
+      background: transparent;
+      color: #ff7b7b;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* إشعار الإضافة السريع */
+    .toast {
+      position: fixed;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid var(--gold);
+      color: var(--gold-light);
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 1500;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* حركات الأنيميشن */
+    @keyframes pulseGold {
+      0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.65); }
+      70% { box-shadow: 0 0 0 14px rgba(212, 175, 55, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- الهيدر الثابت مع زر الترجمة الشاملة -->
+  <header class="top-header">
+    <div class="brand-mini" onclick="navigateTo('home')">
+      <i class="fa-solid fa-home"></i>
+      <span data-i18n="brandName"> skyroof</span>
+    </div>
+
+    <div class="lang-wrapper">
+      <button class="lang-btn" id="langToggleBtn" onclick="toggleLangMenu(event)">
+        <i class="fa-solid fa-globe"></i>
+        <span id="currentLangLabel">العربية</span>
+        <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem;"></i>
+      </button>
+
+      <div class="lang-dropdown" id="langDropdown">
+        <button class="lang-option selected" data-lang="ar" onclick="setLanguage('ar')">
+          <span>العربية</span>
+          <span>🇮🇶</span>
+        </button>
+        <button class="lang-option" data-lang="en" onclick="setLanguage('en')">
+          <span>English</span>
+          <span>en</span>
+        </button>
+        <button class="lang-option" data-lang="ku" onclick="setLanguage('ku')">
+          <span>کوردی </span>
+          <span>kr</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- إشعار الإضافة -->
+  <div class="toast" id="toastMsg"></div>
+
+  <!-- ================= الصفحة الأولى: شاشة الفيديو الكاملة ================= -->
+  <main id="home-page" class="page active">
+    <video class="fullscreen-video" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1080&q=80">
+      <source src="فيديو skyroof.mp4" type="video/mp4" />
+    </video>
+
+    <div class="home-overlay">
+      <h1 class="hero-title" data-i18n="heroTitle">أصالة الضيافة العراقية</h1>
+      <p class="hero-subtitle" data-i18n="heroSubtitle">        استمتع بالاجواء مع العائلة تحت سماء بغداد في skyroof</p>
+
+      <footer class="home-footer">
+        <!-- زر مينو للانتقال للصفحة الثانية -->
+        <button class="menu-cta-btn" onclick="navigateTo('menu')">
+          <i class="fa-solid fa-utensils"></i>
+          <span data-i18n="menuBtn">مينو</span>
+        </button>
+
+        <!-- شعار ورابط الانستكرام -->
+        <a href="https://www.instagram.com/skyroofiq?knvt=MTl6dzV5eTdzNjRvag==" target="_blank" rel="noopener noreferrer" class="insta-link">
+          <i class="fa-brands fa-instagram"></i>
+          <span data-i18n="instaText">@skyroofiq</span>
+        </a>
+
+        <!-- شعار ورابط الموقع تحت شعار إنستغرام -->
+        <!-- شعار العنوان / الموقع بدل الكرة الأرضية -->
+        <a href="https://maps.app.goo.gl/avsS8CUKArS6iYZ86" target="_blank" rel="noopener noreferrer" class="website-link">
+          <i class="fa-solid fa-location-dot"></i>
+          <span data-i18n="websiteText">موقع المطعم </span>
+        </a>
+
+        
+        
+
+        <!-- أرقام الحجوزات -->
+        <div class="reservation-box">
+          <div class="res-label">
+            <i class="fa-solid fa-phone-volume"></i>
+            <span data-i18n="bookingTitle">للحجوزات والاستفسار</span>
+          </div>
+          <div class="res-numbers">
+            <a href="tel:+9647700000001" class="res-phone">
+              <i class="fa-solid fa-phone"></i>
+              <span>0770 000 0001</span>
+            </a>
+            <a href="tel:+9647800000002" class="res-phone">
+              <i class="fa-solid fa-phone"></i>
+              <span>0780 000 0002</span>
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <!-- ================= الصفحة الثانية: المنيو والطلبات ================= -->
+  <section id="menu-page" class="page">
+    <div class="menu-nav-bar">
+      <button class="back-btn" onclick="navigateTo('home')">
+        <i class="fa-solid fa-arrow-right" id="backArrowIcon"></i>
+        <span data-i18n="backHome">الرئيسية</span>
+      </button>
+      <span style="color: var(--gold); font-weight: 800; font-size: 0.95rem;" data-i18n="menuHeaderTitle"> </span>
+    </div>
+
+    <!-- الفيديو المستطيل -->
+    <div class="rect-video-container">
+      <video autoplay muted loop playsinline poster="صورة الصفحة الثانية.jpeg">
+        <source src="" type="video/mp4" />
+      </video>
+      <span class="video-badge">
+        <i class="fa-solid fa-fire-flame-curved"></i>
+        <span data-i18n="videoPromo"></span>
+      </span>
+    </div>
+
+    <!-- قائمة التصنيفات القابلة للسحب الجانبي -->
+    <div class="categories-scroll" id="categoriesContainer"></div>
+
+    <!-- قائمة المأكولات والمشروبات مع الصور -->
+    <div class="menu-items-list" id="menuItemsContainer"></div>
+  </section>
+
+  <!-- شريط سلة الطلبات العائم -->
+  <div class="cart-bar" id="cartBar">
+    <div class="cart-summary">
+      <span class="cart-count-text" id="cartCountLabel">0 عناصر</span>
+      <span class="cart-total-text" id="cartTotalLabel">0 د.ع</span>
+    </div>
+    <button class="review-order-btn" onclick="openOrderModal()">
+      <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i>
+      <span data-i18n="sendWhatsappBtn">إرسال الطلب واتساب</span>
+    </button>
+  </div>
+
+  <!-- نافذة تفاصيل الطلب قبل التحويل للواتساب -->
+  <div class="modal-backdrop" id="orderModal">
+    <div class="order-modal">
+      <div class="modal-header">
+        <h3 data-i18n="orderSummaryTitle">تفاصيل طلبك</h3>
+        <button class="close-modal" onclick="closeOrderModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="order-items-container" id="modalOrderItems"></div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 4px; border-top: 1px solid var(--border-gold); margin-bottom: 12px;">
+        <span style="font-weight:700; color:var(--gold-light);" data-i18n="totalLabel">المجموع الكلي:</span>
+        <span style="font-weight:800; font-size:1.15rem; color:var(--gold);" id="modalTotalValue">0 د.ع</span>
+      </div>
+
+      <input type="text" class="customer-note-input" id="orderNoteInput" data-i18n-placeholder="notePlaceholder" placeholder="رقم الطاولة أو عنوان التوصيل وملاحظاتك..." />
+
+      <button class="whatsapp-send-btn" onclick="sendOrderToWhatsApp()">
+        <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i>
+        <span data-i18n="confirmWhatsapp">تأكيد وإرسال عبر واتساب</span>
+      </button>
+
+      <button class="clear-cart-btn" onclick="clearCart()" data-i18n="clearCart">إفراغ السلة</button>
+    </div>
+  </div>
+
+  <script>
+    const RESTAURANT_WHATSAPP = "9647700000001";
+
+    const TRANSLATIONS = {
+      ar: {
+        langName: "العربية",
+        dir: "rtl",
+        brandName: "skyroof",
+        heroTitle: "أصالة الضيافة العراقية",
+        heroSubtitle: " استمتع بالاجواء مع العائلة تحت سماء بغداد في skyroof",
+        menuBtn: "مينو",
+        instaText: "@skyroofiq",
+        websiteText: "موقع المطعم",
+        bookingTitle: "للحجوزات والاستفسار",
+        backHome: "الرئيسية",
+        menuHeaderTitle: "",
+        videoPromo: "",
+        currency: "د.ع",
+        addedToast: "تمت الإضافة إلى الطلب",
+        itemsCount: "عناصر",
+        sendWhatsappBtn: "إرسال الطلب واتساب",
+        orderSummaryTitle: "تفاصيل طلبك",
+        totalLabel: "المجموع الكلي:",
+        notePlaceholder: "رقم الطاولة أو عنوان التوصيل وملاحظاتك...",
+        confirmWhatsapp: "تأكيد وإرسال عبر واتساب",
+        clearCart: "إفراغ السلة",
+        waHeader: "مرحباً، أود طلب الوجبات التالية من skyroof:",
+        waTotal: "المجموع الكلي:",
+        waNote: "ملاحظات / العنوان:"
+      },
+      en: {
+        langName: "English",
+        dir: "ltr",
+        brandName: "skyroof",
+        heroTitle: "Authentic Iraqi Hospitality",
+        heroSubtitle: "Enjoy family vibes under Baghdad’s sky at Skyroof.",
+        menuBtn: "MENU",
+        instaText: "@skyroofiq",
+        websiteText: "موقع المطعم",
+        bookingTitle: "Reservations & Inquiries",
+        backHome: "Home",
+        menuHeaderTitle: "",
+        videoPromo: "",
+        currency: "IQD",
+        addedToast: "Added to your order",
+        itemsCount: "items",
+        sendWhatsappBtn: "Order via WhatsApp",
+        orderSummaryTitle: "Your Order Summary",
+        totalLabel: "Total Amount:",
+        notePlaceholder: "Table number or delivery address & notes...",
+        confirmWhatsapp: "Confirm & Send on WhatsApp",
+        clearCart: "Clear Cart",
+        waHeader: "Hello, I would like to place an order from skyroof:",
+        waTotal: "Total Amount:",
+        waNote: "Notes / Address:"
+      },
+      ku: {
+        langName: "کوردی سۆرانی",
+        dir: "rtl",
+        brandName: "skyroof",
+        heroTitle: "ڕەسەنایەتی میوانداری عێراقی",
+        heroSubtitle: "لەگەڵ خێزانەکەت چێژ لە کەشوهەواکە وەربگرە لەژێر ئاسمانی بەغداد لە سکایکرۆف",
+        menuBtn: "مینیۆ",
+        instaText: "@skyroofiq",
+        websiteText: "موقع المطعم",
+        bookingTitle: "بۆ حجزکردن و پەیوەندی",
+        backHome: "سەرەکی",
+        menuHeaderTitle: "",
+        videoPromo: "",
+        currency: "د.ع",
+        addedToast: "زیادکرا بۆ داواکارییەکەت",
+        itemsCount: "دانە",
+        sendWhatsappBtn: "ناردن بۆ واتسئاپ",
+        orderSummaryTitle: "وردەکاری داواکارییەکەت",
+        totalLabel: "کۆی گشتی:",
+        notePlaceholder: "ژمارەی مێز یان ناونیشانی گەیاندن و تێبینی...",
+        confirmWhatsapp: "پشتڕاستکردنەوە و ناردن بۆ واتسئاپ",
+        clearCart: "بەتاڵکردنەوەی سەبەتە",
+        waHeader: "سڵاو، دەمەوێت ئەم خواردنانە داوا بکەم لە skyroof :",
+        waTotal: "کۆی گشتی:",
+        waNote: "تێبینی / ناونیشان:"
+      }
+    };
+
+    const CATEGORIES = [
+      { id: "all", icon: "fa-border-all", name: { ar: "الكل", en: "All", ku: "هەمووی" } },
+      { id: "grills", icon: "fa-fire-burner", name: { ar: "مشويات", en: "Grills", ku: "برژاوەکان" } },
+      { id: "appetizers", icon: "fa-bowl-food", name: { ar: "مقبلات", en: "Appetizers", ku: "موقەبیلات" } },
+      { id: "mains", icon: "fa-utensils", name: { ar: "أطباق رئيسية", en: "Main Dishes", ku: "خواردنە سەرەکییەکان" } },
+      { id: "drinks", icon: "fa-champagne-glasses", name: { ar: "مشروبات", en: "Drinks", ku: "خواردنەوەکان" } },
+      { id: "desserts", icon: "fa-cake-candles", name: { ar: "حلويات", en: "Desserts", ku: "شیرینی" } }
+    ];
+
+    const MENU_ITEMS = [];
+
+    let currentLang = localStorage.getItem("royal_menu_lang") || "ar";
+    let activeCategory = "all";
+    let cart = {};
+    const AUTO_TRANS_CACHE = JSON.parse(localStorage.getItem("royal_auto_trans_cache") || "{}");
+
+    async function translateArabicText(text, targetLang) {
+      if (!text || !text.trim()) return "";
+      const cleanText = text.trim();
+      const cacheKey = `${cleanText}__${targetLang}`;
+
+      if (AUTO_TRANS_CACHE[cacheKey]) {
+        return AUTO_TRANS_CACHE[cacheKey];
+      }
+
+      try {
+        const langPair = targetLang === "ku" ? "ar|ckb" : "ar|en";
+        const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(cleanText)}&langpair=${langPair}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const translated = data?.responseData?.translatedText;
+
+        if (translated && !translated.toUpperCase().includes("MYMEMORY WARNING")) {
+          AUTO_TRANS_CACHE[cacheKey] = translated;
+          localStorage.setItem("royal_auto_trans_cache", JSON.stringify(AUTO_TRANS_CACHE));
+          return translated;
+        }
+      } catch (err) {
+        console.warn("Auto-translation fallback to Arabic:", err);
+      }
+
+      return cleanText;
+    }
+
+    async function addArabicMenuItem({ cat, price, img, nameAr, descAr }) {
+      const existingItem = MENU_ITEMS.find((item) => item.name.ar.trim() === nameAr.trim());
+      if (existingItem) {
+        return existingItem;
+      }
+
+      const newId = MENU_ITEMS.length ? Math.max(...MENU_ITEMS.map((i) => i.id)) + 1 : 1;
+
+      const newItem = {
+        id: newId,
+        cat: cat || "grills",
+        price: Number(price) || 0,
+        img: img || "",
+        name: { ar: nameAr, en: nameAr, ku: nameAr },
+        desc: { ar: descAr, en: descAr, ku: descAr }
+      };
+
+      MENU_ITEMS.push(newItem);
+      renderMenuItems();
+
+      const [nameEn, nameKu, descEn, descKu] = await Promise.all([
+        translateArabicText(nameAr, "en"),
+        translateArabicText(nameAr, "ku"),
+        translateArabicText(descAr, "en"),
+        translateArabicText(descAr, "ku")
+      ]);
+
+      newItem.name.en = nameEn;
+      newItem.name.ku = nameKu;
+      newItem.desc.en = descEn;
+      newItem.desc.ku = descKu;
+
+      renderMenuItems();
+      return newItem;
+    }
+
+    function navigateTo(pageName) {
+      document.querySelectorAll(".page").forEach((p) => p.classList.remove("active"));
+      if (pageName === "menu") {
+        document.getElementById("menu-page").classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        document.getElementById("home-page").classList.add("active");
+      }
+    }
+
+    function toggleLangMenu(e) {
+      e.stopPropagation();
+      document.getElementById("langDropdown").classList.toggle("active");
+    }
+
+    document.addEventListener("click", () => {
+      document.getElementById("langDropdown").classList.remove("active");
+    });
+
+    function setLanguage(lang) {
+      if (!TRANSLATIONS[lang]) return;
+      currentLang = lang;
+      localStorage.setItem("royal_menu_lang", lang);
+
+      const t = TRANSLATIONS[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = t.dir;
+      document.getElementById("currentLangLabel").textContent = t.langName;
+
+      const backArrow = document.getElementById("backArrowIcon");
+      if (backArrow) {
+        backArrow.className = t.dir === "rtl" ? "fa-solid fa-arrow-right" : "fa-solid fa-arrow-left";
+      }
+
+      document.querySelectorAll(".lang-option").forEach((opt) => {
+        opt.classList.toggle("selected", opt.dataset.lang === lang);
+      });
+
+      applyTranslationsToDOM();
+      renderCategories();
+      renderMenuItems();
+      updateCartUI();
+    }
+
+    function applyTranslationsToDOM() {
+      const t = TRANSLATIONS[currentLang];
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (t[key]) {
+          el.textContent = t[key];
+        }
+      });
+
+      document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-placeholder");
+        if (t[key]) {
+          el.placeholder = t[key];
+        }
+      });
+    }
+
+    const domObserver = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.addedNodes.length > 0) {
+          applyTranslationsToDOM();
+          break;
+        }
+      }
+    });
+
+    domObserver.observe(document.body, { childList: true, subtree: true });
+
+    function formatIQD(amount) {
+      return amount.toLocaleString("en-US");
+    }
+
+    function renderCategories() {
+      const container = document.getElementById("categoriesContainer");
+      container.innerHTML = CATEGORIES.map((cat) => {
+        const isActive = cat.id === activeCategory ? "active" : "";
+        const label = cat.name[currentLang] || cat.name.ar;
+        return `
+          <button class="cat-pill ${isActive}" onclick="selectCategory('${cat.id}')">
+            <i class="fa-solid ${cat.icon}"></i>
+            <span>${label}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function selectCategory(catId) {
+      activeCategory = catId;
+      renderCategories();
+      renderMenuItems();
+    }
+
+    function renderMenuItems() {
+      const container = document.getElementById("menuItemsContainer");
+      const t = TRANSLATIONS[currentLang];
+      const filtered = activeCategory === "all"
+        ? MENU_ITEMS
+        : MENU_ITEMS.filter((item) => item.cat === activeCategory);
+
+      const fallbackImg = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%231a1a1a'/%3E%3Ctext x='50%25' y='52%25' dominant-baseline='middle' text-anchor='middle' fill='%23d4af37' font-family='sans-serif' font-size='22' font-weight='bold'%3ERoyal%3C/text%3E%3C/svg%3E";
+
+      container.innerHTML = filtered.map((item) => {
+        const title = item.name[currentLang] || item.name.ar;
+        const desc = item.desc[currentLang] || item.desc.ar;
+        const qty = cart[item.id] || 0;
+
+        return `
+          <div class="menu-card">
+            <div class="item-img-box">
+              <img src="${item.img}" alt="${title}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackImg}';" />
+            </div>
+
+            <div class="item-details">
+              <div>
+                <div class="item-title">${title}</div>
+                <div class="item-desc">${desc}</div>
+              </div>
+
+              <div class="item-bottom-row">
+                <div class="item-price">
+                  <span>${formatIQD(item.price)}</span>
+                  <span class="currency-label">${t.currency}</span>
+                </div>
+
+                <div class="qty-controls">
+                  ${qty > 0 ? `
+                    <button class="minus-btn" onclick="changeQty(${item.id}, -1)" aria-label="Remove">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                    <span class="qty-count">${qty}</span>
+                  ` : ""}
+                  <button class="plus-btn" onclick="changeQty(${item.id}, 1)" aria-label="Add">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function changeQty(itemId, delta) {
+      const current = cart[itemId] || 0;
+      const updated = current + delta;
+
+      if (updated <= 0) {
+        delete cart[itemId];
+      } else {
+        cart[itemId] = updated;
+        if (delta > 0) {
+          showToast(TRANSLATIONS[currentLang].addedToast);
+        }
+      }
+
+      renderMenuItems();
+      updateCartUI();
+      if (document.getElementById("orderModal").classList.contains("open")) {
+        renderOrderModalItems();
+      }
+    }
+
+    function updateCartUI() {
+      const t = TRANSLATIONS[currentLang];
+      const cartBar = document.getElementById("cartBar");
+      let totalItems = 0;
+      let totalPrice = 0;
+
+      for (const [id, qty] of Object.entries(cart)) {
+        const item = MENU_ITEMS.find((i) => i.id === Number(id));
+        if (item) {
+          totalItems += qty;
+          totalPrice += item.price * qty;
+        }
+      }
+
+      if (totalItems > 0) {
+        cartBar.classList.add("visible");
+        document.getElementById("cartCountLabel").textContent = `${totalItems} ${t.itemsCount}`;
+        document.getElementById("cartTotalLabel").textContent = `${formatIQD(totalPrice)} ${t.currency}`;
+      } else {
+        cartBar.classList.remove("visible");
+        closeOrderModal();
+      }
+    }
+
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById("toastMsg");
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1500);
+    }
+
+    function openOrderModal() {
+      renderOrderModalItems();
+      document.getElementById("orderModal").classList.add("open");
+    }
+
+    function closeOrderModal() {
+      document.getElementById("orderModal").classList.remove("open");
+    }
+
+    function renderOrderModalItems() {
+      const t = TRANSLATIONS[currentLang];
+      const container = document.getElementById("modalOrderItems");
+      let totalPrice = 0;
+      let html = "";
+
+      for (const [id, qty] of Object.entries(cart)) {
+        const item = MENU_ITEMS.find((i) => i.id === Number(id));
+        if (!item) continue;
+        const lineTotal = item.price * qty;
+        totalPrice += lineTotal;
+        const title = item.name[currentLang] || item.name.ar;
+
+        html += `
+          <div class="order-line">
+            <img src="${item.img}" alt="${title}" class="order-line-img" />
+            <div class="order-line-info">
+              <div class="order-line-name">${title}</div>
+              <div class="order-line-sub">${qty} × ${formatIQD(item.price)} = ${formatIQD(lineTotal)} ${t.currency}</div>
+            </div>
+            <div class="qty-controls">
+              <button class="minus-btn" onclick="changeQty(${item.id}, -1)"><i class="fa-solid fa-minus"></i></button>
+              <span class="qty-count">${qty}</span>
+              <button class="plus-btn" onclick="changeQty(${item.id}, 1)"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+      document.getElementById("modalTotalValue").textContent = `${formatIQD(totalPrice)} ${t.currency}`;
+    }
+
+    function clearCart() {
+      cart = {};
+      renderMenuItems();
+      updateCartUI();
+    }
+
+    function sendOrderToWhatsApp() {
+      const t = TRANSLATIONS[currentLang];
+      let lines = [t.waHeader, ""];
+      let totalPrice = 0;
+
+      for (const [id, qty] of Object.entries(cart)) {
+        const item = MENU_ITEMS.find((i) => i.id === Number(id));
+        if (!item) continue;
+        const title = item.name[currentLang] || item.name.ar;
+        const lineTotal = item.price * qty;
+        totalPrice += lineTotal;
+        lines.push(`• ${title} (×${qty}) — ${formatIQD(lineTotal)} ${t.currency}`);
+      }
+
+      lines.push("");
+      lines.push(`${t.waTotal} ${formatIQD(totalPrice)} ${t.currency}`);
+
+      const note = document.getElementById("orderNoteInput").value.trim();
+      if (note) {
+        lines.push(`${t.waNote} ${note}`);
+      }
+
+      const encodedText = encodeURIComponent(lines.join("\n"));
+      const waUrl = `https://wa.me/${RESTAURANT_WHATSAPP}?text=${encodedText}`;
+      window.open(waUrl, "_blank");
+    }
+
+    // تهيئة الموقع عند التشغيل
+    setLanguage(currentLang);
+
+addArabicMenuItem({
+  cat: "grills",
+  price: 16000,
+  img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400&q=80",
+  nameAr: "تكة لحم عراقي",
+  descAr: "قطع لحم عراقي متبلة ومشوية على الفحم"
+});
+
+addArabicMenuItem({
+  cat: "drinks",
+  price: 3000,
+  img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=400&q=80",
+  nameAr: "عصير برتقال طبيعي",
+  descAr: "عصير برتقال عراقي طازج بدون سكر مضاف"
+});
+
+
+
+
+
+
+
+  </script>
+</body>
+</html>
